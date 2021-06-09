@@ -8,7 +8,7 @@ public with sharing class KnowledgeSearcher_LCC {
         // look up the case
         List<Case> cases = [SELECT Subject, Region__c, Sub_Region__c From Case WHERE Id =: recordId];
         if (cases.size() != 1) {
-            throw new AuraHandledException('Unexpected result when trying to locate Case with <' + recordId + '>');
+            throw new AuraHandledException('Unexpected result when trying to locate Case  <' + recordId + '>');
         }
 
         // get case
