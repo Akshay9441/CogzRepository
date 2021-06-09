@@ -1,0 +1,107 @@
+<template>
+    <div class="slds-card_boundary">
+       <div class="slds-grid slds-grid_vertical slds-p-around_small">
+          <div class="slds-col">
+             <lightning-card>
+                <div slot="title" ><b>Knowledge</b></div>
+                <div>
+                   <div class="slds-form-element">
+                      <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                         <lightning-icon class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" icon-name="utility:search" size="x-small"></lightning-icon>
+                         <input type="text" value={searchInput} id="text-input-id-1" placeholder="Search Knowledge" class="slds-input" onclick={showdefault} onblur={hideResults} oninput={handleSearch}/>
+                         <!-- onblur={hideResults} --> 
+                      </div>
+                   </div>
+                   <template if:true={showsearchResult}>
+                      <div  class="slds-card_boundary searchResultList list slds-size--1-of-1 slds-show slds-p-vertical--xx-small lookup__menu uiAbstractList uiAutocompleteList">
+                         <br/>
+                         <template if:false={isSearchExecuting}>
+                            <div class="slds-p-around_xx-small">
+                               <span>Recent Knowledge</span>
+                            </div>
+                         </template>
+                         
+                         <div class="listContent">
+                            <ul class="lookup__list  visible" role="presentation">
+                               <template if:true={isSearchExecuting}>
+                                  <li class="recentSearchHover lookup__item SEARCH_OPTION slds-text-link--reset slds-grid slds-grid--vertical-align-center slds-size_1-of-1 slds-truncate  default uiAutocompleteOption forceSearchInputDesktopOption" >
+                                     <a class="SEARCH_OPTION slds-text-link--reset slds-grid slds-grid--vertical-align-center slds-size_1-of-1 slds-truncate " onmousedown={searchByKeyWord} >
+                                        <div class="slds-icon_container">
+                                           <lightning-icon class="slds-icon slds-icon--small slds-icon-text-default slds-text-align--center slds-p-top--xx-small slds-m-vertical--xx-small slds-m-right--small slds-m-left--none slds-button__icon slds-icon-utility-search slds-icon_container forceIcon" icon-name="utility:search" size="x-small"></lightning-icon>
+                                        </div>
+                                        <span class="mruSearchLabel slds-text-body_regular slds-text-color_default slds-truncate slds-show slds-m-right_large slds-text-align_left slds-grow" >"{searchInput}" in Knowledge</span>
+                                     </a>
+                                  </li>
+                               </template>
+                               <template for:each={recentArticles} for:item="art">
+                                  <li key={art.Id} class="recentSearchHover slds-p-around_xx-small lookup__item MRU_SCOPED slds-text-link--reset slds-grid slds-grid--vertical-align-center slds-size_1-of-1 slds-truncate  default uiAutocompleteOption forceSearchInputDesktopOption" >
+                                     <a class="MRU_SCOPED slds-text-link--reset slds-grid slds-grid--vertical-align-center slds-size_1-of-1 slds-truncate "  data-toto={art.Id} href={art.Id} onmousedown={redirectToArticle}>
+                                        <div class="slds-icon_container">
+                                           <lightning-icon class="mruIcon slds-icon slds-icon--small slds-m-vertical--xx-small slds-m-right--small slds-m-left--none forceEntityIcon" style="background-color: #F2CF5B"  icon-name="custom:custom55" size="small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-truncate" >
+                                           <span class="mruName slds-text-body--regular slds-text-color--default slds-truncate slds-show" >
+                                              <div class="slds-truncate uiOutputRichText">{art.Title}</div>
+                                           </span>
+                                           <div class="slds-clearfix mruDescription slds-text-heading--label-normal slds-show slds-truncate" >
+                                              <!--render facet: 24:3984;a-->
+                                              <div class="slds-float--none slds-truncate uiOutputRichText" >{art.ArticleNumber}</div>
+                                           </div>
+                                        </div>
+                                     </a>
+                                  </li>
+                               </template>
+                            </ul>
+                            <br/>
+                         </div>
+                      </div>
+                   </template>
+                   <hr/>
+                </div>
+                <template if:true={articles} >
+                   <lightning-layout>
+                      <lightning-layout-item >
+                         <!--{articles.length} article(s) found-->
+                         <template if:false={isKeyWordSearchExecuting}> Suggested Articles </template>
+                         <template if:true={isKeyWordSearchExecuting}>
+                          Search Results (<a href="#" onclick={showAllArticles}>Back to Suggessions</a>)
+                        </template><br/>
+                         <Span class="slds-form-element__label slds-no-flex">
+                            {articles.length} 
+                            <template if:true={resultLength}> Result</template>
+                            <template if:false={resultLength}> Results</template>
+                         </Span>
+                      </lightning-layout-item>
+                   </lightning-layout>
+                </template>
+                <br/>
+                <div class="divArticleResults">
+                   <template if:true={articlesToShow} >
+                      <template for:each={articles} for:item="a">
+                         <a class="itemTitle textUnderline outputLookupLink slds-truncate forceOutputLookup" key={a.Id} data-toto={a.Id} href={a.Id} onclick={redirectToArticle} >
+                            <p key={a.Title}>{a.Title}</p>
+                         </a>
+                         <div key={a.Id} class="slds-tile__detail slds-text-body--small slds-var-p-bottom_xxx-small articleMetaData">
+                            <ul class="slds-list--horizontal slds-wrap slds-has-dividers--right">
+                               <li class="slds-item" ><span  class="uiOutputText" >{a.ArticleNumber}</span></li>
+                               <li class="slds-item" >
+                                  Last Published &nbsp;
+                                  <lightning-formatted-date-time value={a.LastPublishedDate} year="numeric" month="short" day="numeric"  hour="2-digit" minute="2-digit" ></lightning-formatted-date-time>
+                               </li>
+                            </ul>
+                            <div class="resultBody" >
+                               <span class="summary">
+                               {a.Summary}
+                               </span>
+                               <hr/>
+                            </div>
+                         </div>
+                      </template>
+                   </template>
+                   <template if:false={articleList}><i>No articles found.</i></template>
+                </div>
+             </lightning-card>
+          </div>
+       </div>
+    </div>
+ </template>

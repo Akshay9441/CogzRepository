@@ -1,0 +1,59 @@
+<template>
+    <div class="slds-page-header slds-page-header_record-home">
+        <div class="slds-page-header__row">
+           <div class="slds-page-header__col-title">
+              <div class="slds-media">
+                 <div class="slds-media__figure">                    
+                    <lightning-icon icon-name={iconName} alternative-text="Approved" title="Approved"></lightning-icon>
+                 </div>
+                 <div class="slds-media__body">
+                    <div class="slds-page-header__name">
+                       <div class="slds-page-header__name-title">
+                          <h1>
+                             <span>{objectApiName}</span>
+                             <span class="slds-page-header__title slds-truncate">{titleValue}</span>
+                          </h1>
+                       </div>
+                    </div>
+                 </div>
+              </div>
+           </div>
+           <div class="slds-page-header__col-actions">
+              <div class="slds-page-header__controls">
+                 <div class="slds-page-header__control">
+                  <template if:true={isFollowing}>
+                  <button data-id="followButton" class="slds-button slds-button--neutral is-selected slds-is-selected uiButton" aria-live="assertive" type="button" aria-label="" data-aura-rendered-by="2498:0" data-aura-class="uiButton" onmouseover={changeToUnfollow} onmouseout={changeToFollow} onclick={handleFollowUnfollow}> 
+                     <lightning-icon class="slds-button__icon slds-button__icon--left slds-icon_container forceIcon slds-icon-utility-check" icon-name={followIcon} size="xx-small" data-id="followState" ></lightning-icon>
+                     &nbsp;{followUnfollow}
+                  </button>
+               </template>
+                  <template if:false={isFollowing}>
+                    <button data-id="followButton" class="slds-button slds-button_neutral slds-button_stateful slds-not-selected" aria-live="assertive"
+                    onclick={handleFollowUnfollow}>
+                    
+                       <span class="slds-text-not-selected">                         
+                          <lightning-icon class="slds-button__icon slds-button__icon--left slds-icon_container forceIcon slds-icon-utility-add" icon-name="utility:add" size="xx-small"></lightning-icon>
+                          Follow
+                       </span>
+                    </button>
+                  </template>
+                 </div>                
+              </div>
+           </div>
+        </div>
+        <div class="slds-page-header__row slds-page-header__row_gutters">
+           <div class="slds-page-header__col-details">
+            <div class="slds-grid slds-page-header__detail-row">             
+               <div  key={field} class="slds-col slds-size_1-of-11">  
+                  <c-rew_-generic-header-fields  field-value={firstFieldData.fieldValue} field-label={firstFieldData.fieldLabel} field-type={firstFieldData.fieldType} object-api-name={objectApiName}></c-rew_-generic-header-fields>
+              </div>
+                  <template for:each={firstRowFields} for:item="field">
+                    <div  key={field} class="slds-col slds-size_1-of-11 slds-align_absolute-center">  
+                        <c-rew_-generic-header-fields key={field} field-value={field.fieldValue} field-label={field.fieldLabel} field-type={field.fieldType} object-api-name={objectApiName}></c-rew_-generic-header-fields>
+                    </div>
+                </template>   
+                </div>
+           </div>
+        </div>       
+     </div>
+</template>

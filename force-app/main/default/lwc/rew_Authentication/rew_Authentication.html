@@ -1,0 +1,117 @@
+<template>
+    <c-rew_-generic-header record-id={recordId} object-api-name={objectApiName}></c-rew_-generic-header>
+        <lightning-card>
+            <template if:true={isMainPageShown}> 
+            <div class="slds-grid slds-gutters slds-p-around_small">
+                <div class="slds-col slds-size_1-of-3">
+                    <!-- slds-align-middle slds-col--padded -->
+                    <c-rew_-show-auth-knowledge-articles record-type="Authentication"></c-rew_-show-auth-knowledge-articles>
+                </div>
+                <div class="slds-col slds-size_1-of-3"> 
+                <c-rew_-show-auth-customer-details  record-id={recordId} oncardselect={handleSelectCard}></c-rew_-show-auth-customer-details>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <c-rew_-show-auth-special-instructions ></c-rew_-show-auth-special-instructions>
+                    <br/><br/> 
+                    <template if:true={displayVerificationButtons}>               
+                        <button class="slds-button slds-button--brand block buttonWidth" onclick={handleGenerateOTPClick}>Generate OTP</button>
+                    </template>
+                    <template if:true={isModalOpen}>                   
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container buttonWidth">                            
+                                <header class="slds-modal__header">
+                                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                                        <lightning-icon icon-name="utility:close"
+                                            alternative-text="close"
+                                            variant="inverse"
+                                            size="small" ></lightning-icon>
+                                        <span class="slds-assistive-text">Close</span>
+                                    </button>
+                                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Generate OTP</h2>
+                                </header>                            
+                                <div id="radioSection" class="slds-modal__content slds-p-around_medium">
+                                    <p>Send one time verification code to customer on</p>
+                                    <br/>
+                                    <p>
+                                        <lightning-radio-group 
+                                        name="radioVerificationGroup"                                    
+                                        options={optionsVerification}
+                                        value={selectedMode}
+                                        type="radio"></lightning-radio-group>
+                                        <!-- onchange={handleChangeVerificationMode}  -->
+                                    </p>
+                                    <br/>
+                                    <p>
+                                        <button class="slds-button slds-button_brand" onclick={submitDetails} title="Send">Send</button>
+                                    </p>
+                                    <br/>
+                                    <p>Customer authenticated successfully ?</p>
+                                    <br/>
+                                        <p>
+                                            <lightning-radio-group
+                                            name="radioDecisionGroup"                                        
+                                            options={optionsDecision}
+                                            value={selectedDecision}
+                                            type="radio"></lightning-radio-group>
+                                            <!-- onchange={handleChangeDecision}  -->
+                                        </p>                                   
+                                </div>                           
+                                <footer class="slds-modal__footer rmPad">
+                                    <button class="slds-button slds-button_brand " onclick={closeModal} title="Go to Customer">Go to Customer</button>
+                                    <button class="slds-button slds-button_neutral buttonWidth" onclick={submitDetails} title="Verified">Verified</button>
+                                    <button class="slds-button slds-button_neutral buttonWidth" onclick={closeModal} title="Unverified">Unverified</button>                                
+                                </footer>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                    </template>
+                    <br/><br/>
+                    <template if:true={displayVerificationButtons}> 
+                        <button class="slds-button slds-button--brand block buttonWidth" onclick={handleVerifiedClick}>Verified</button>
+                    </template>
+                    <br/><br/>
+                    <template if:true={displayVerificationButtons}> 
+                        <button class="slds-button slds-button--brand block buttonWidth" onclick={handleUnverifiedClick}>Unverified</button>
+                    </template>
+                    <template if:true={isUnverifiedModalOpen}>                   
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container buttonWidth">                                  
+                                    <div><lightning-icon icon-name="utility:close"
+                                    alternative-text="close"
+                                    variant="inverse"
+                                    size="small" onclick={closeModal} class="slds-float_right pointer"></lightning-icon> <br/><br/>
+                            </div>
+                            <!-- <header class="slds-modal__header">
+                                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                                        
+                                        <span class="slds-assistive-text">Close</span>
+                                    </button>
+                                    <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Confirm</h2>
+                                </header>                             -->
+                            <div class="slds-modal__content slds-p-around_medium">
+                                <p><lightning-icon class="slds-p-around_medium" icon-name="utility:warning" alternative-text="Warning!" title="Warning"></lightning-icon>
+                                    &nbsp;Are you sure the customer has failed to verify ?</p>                                                            
+                            </div>                           
+                            <footer class="slds-modal__footer rmPad">
+                                <button class="slds-button slds-button_brand buttonWidth" onclick={closeModal} title="No">No</button>
+                                <button class="slds-button slds-button_brand buttonWidth" onclick={unverifiedYesClickHandled} title="Yes">Yes</button>                                                               
+                            </footer>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                    </template>
+                </div>
+            </div>
+            </template>  
+            <template if:false={isMainPageShown}>
+                <div>
+                    <b class="slds-p-around_medium"><a onclick={handleBack}>Back</a></b>   
+                </div>    
+                <br/><br/>
+                <div>
+                    <b><p class="slds-align_absolute-center">Sorry we cannot proceed with the customer</p> </b>
+                </div> 
+                <br/><br/><br/><br/>         
+            </template>
+        </lightning-card>     
+</template>

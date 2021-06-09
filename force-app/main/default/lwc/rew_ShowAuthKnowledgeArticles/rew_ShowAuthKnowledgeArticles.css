@@ -1,0 +1,11 @@
+.recentSearchHover:hover {
+    background-color: rgba(238, 238, 238, 1);
+  }
+.searchResultList {
+    background-color:white;
+    z-index:99;
+}
+.divArticleResults {
+    overflow-y: auto; 
+    height:54rem;
+}

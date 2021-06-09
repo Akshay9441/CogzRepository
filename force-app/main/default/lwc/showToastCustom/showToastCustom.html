@@ -1,0 +1,23 @@
+<template>
+    <template if:true={showToastDiv}>
+    <div class="demo-only" style="height:4rem;position:absolute;">
+        <div class="slds-notify_container">
+        <div class="slds-notify slds-notify_toast slds-theme_error" role="status">
+            <span class="slds-assistive-text">error</span>
+            <lightning-icon class="slds-icon_container slds-m-right_small slds-no-flex slds-align-top iconColor" icon-name="utility:error"  alternative-text="Error!" title="Error"></lightning-icon>
+            <div class="slds-notify__content">
+                <b><h2 class="slds-text-heading_small">Error</h2></b>
+                <p class="slds-p-right_small">
+                    {errorMessage}
+                </p>
+            </div>
+            <div class="slds-notify__close">
+                <button class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onclick={closeToast}>
+                    <lightning-icon class="slds-icon_container slds-no-flex slds-align-top iconColor" icon-name="utility:close" size="small"  alternative-text="Close!" title="Close"></lightning-icon>
+                </button>
+            </div>
+        </div>
+        </div>
+    </div>    
+</template>
+</template>

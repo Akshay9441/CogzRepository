@@ -1,0 +1,19 @@
+<template> 
+        <div class="slds-card_boundary">
+            <lightning-card icon-name="standard:contact">
+                <div slot="title" ><b>Special Instructions</b></div>
+                <lightning-layout vertical-align="center">
+                    <lightning-layout-item padding="around-xx-small"  style="width:100%">
+                        <div class="slds-p-around_small">                             
+                            <div class="slds-form-element slds-p-around_x-small" data-target-id="1" onclick={handleSelect} >                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="1">
+                                <lightning-formatted-text value="Special Instruction 1" class="slds-form-element__label slds-no-flex" data-target-id="1"></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="Special Instruction 2" class="slds-form-element__label slds-no-flex" data-target-id="1"></lightning-formatted-text><br/>
+                            </div>
+                            </div>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-card>
+        </div>
+</template>

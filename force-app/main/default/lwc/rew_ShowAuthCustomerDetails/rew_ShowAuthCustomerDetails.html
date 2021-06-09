@@ -1,0 +1,126 @@
+<template> 
+    <div class="slds-card_boundary">
+        <lightning-card>
+            <div slot="title" ><b>Authentication</b></div>
+            <lightning-layout vertical-align="center">
+                <lightning-layout-item padding="around-xx-small" style="width:100%">
+                    <div class="slds-p-around_small"> 
+                        <b> <lightning-formatted-text value="Basic Details"></lightning-formatted-text></b>
+                        <br/> <br/>  
+                        <div class="slds-form-element slds-p-around_x-small containerBox" data-target-id="1" onclick={handleSelect} >                            
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="1">
+                            <lightning-formatted-text value="First Name:" class="slds-form-element__label slds-no-flex" data-target-id="1"></lightning-formatted-text><br/>
+                            <lightning-formatted-text value="James" data-target-id="1"></lightning-formatted-text>                                            
+                            <lightning-icon size="small" class=" hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="1" data-id="10" variant="success" icon-name="utility:success"  ></lightning-icon>
+                                
+                        </div>
+                        </div>
+                        </br>   
+                        <div class="slds-form-element slds-p-around_x-small containerBox"  data-target-id="2" onclick={handleSelect} >                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="2">
+                                <lightning-formatted-text value="Preferred Name:" class="slds-form-element__label slds-no-flex" data-target-id="2"></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="JSmith" data-target-id="2"></lightning-formatted-text>                                            
+                                <lightning-icon size="small" class="hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="2" data-id="20" variant="success" icon-name="utility:success" ></lightning-icon>
+                                    
+                            </div>
+                        </div>  
+                        </br> 
+                        <div class="slds-form-element slds-p-around_x-small containerBox"  data-target-id="3" onclick={handleSelect} >                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="3">
+                                <lightning-formatted-text value="Last Name:" class="slds-form-element__label slds-no-flex" data-target-id="3" ></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="Smith" data-target-id="3"></lightning-formatted-text>                                            
+                                <lightning-icon size="small" class="hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="3" data-id="30" variant="success" icon-name="utility:success" ></lightning-icon>
+                                    
+                            </div>
+                        </div> 
+                        <br/>  
+                        <b> <lightning-formatted-text value="Customer Details"></lightning-formatted-text></b>
+                        <br/> <br/>                    
+                        <div class="slds-form-element slds-p-around_x-small containerBox" data-target-id="4" onclick={handleSelect}>                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="4">
+                                <lightning-formatted-text value="Date of Birth:" class="slds-form-element__label slds-no-flex" data-target-id="4"></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="11-Dec-1984" data-target-id="4"></lightning-formatted-text>                                            
+                                <lightning-icon size="small" class="hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="4" data-id="40" variant="success" icon-name="utility:success" ></lightning-icon>
+                                    
+                            </div>
+                        </div>    
+                        </br> 
+                        <div class="slds-form-element slds-p-around_x-small containerBox" data-target-id="5" onclick={handleSelect} >                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="5">
+                                <lightning-formatted-text value="Email Address:" class="slds-form-element__label slds-no-flex" data-target-id="5"></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="jsmith@gmail.com" data-target-id="5"></lightning-formatted-text>                                            
+                                <lightning-icon size="small" class="hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="5" data-id="50" variant="success" icon-name="utility:success" ></lightning-icon>
+                                    
+                            </div>
+                        </div>    
+                        </br> 
+                        <div class="slds-form-element slds-p-around_x-small containerBox"  data-target-id="6" onclick={handleSelect}>                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="6">
+                                <lightning-formatted-text value="Mobile Phone Number:" class="slds-form-element__label slds-no-flex" data-target-id="6"></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="+61-7863458901" data-target-id="6"></lightning-formatted-text>                                            
+                                <lightning-icon size="small" class="hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="6" data-id="60" variant="success" icon-name="utility:success" ></lightning-icon>
+                                    
+                            </div>
+                        </div>    
+                        </br> 
+                        <div class="slds-form-element slds-p-around_x-small containerBox" data-target-id="7" onclick={handleSelect}>                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="7">
+                                <lightning-formatted-text value="Residential Address:" class="slds-form-element__label slds-no-flex" data-target-id="7"></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="98 Shirley Street PIMPAMA QLD 4209 AUSTRALIA" data-target-id="7"></lightning-formatted-text>                                            
+                                <lightning-icon size="small" class="hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="7" data-id="70" variant="success" icon-name="utility:success" ></lightning-icon>
+                                    
+                            </div>
+                        </div>    
+                        </br> 
+                        <div class="slds-form-element slds-p-around_x-small containerBox" data-target-id="8" onclick={handleSelect}>                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="8">
+                                <lightning-formatted-text value="Mailing Address:" class="slds-form-element__label slds-no-flex" data-target-id="8"></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="98 Shirley Street PIMPAMA QLD 4209 AUSTRALIA" data-target-id="8" ></lightning-formatted-text>                                            
+                                <lightning-icon size="small" class="hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="8" data-id="80" variant="success" icon-name="utility:success" ></lightning-icon>
+                                    
+                            </div>
+                        </div> 
+                        <br/>
+                        <b> <lightning-formatted-text value="Additional Details"></lightning-formatted-text></b>  
+                        <br/><br/> 
+                        <div class="slds-form-element slds-p-around_x-small containerBox" data-target-id="9" onclick={handleSelect}>                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="9">
+                                <lightning-formatted-text value="Last place shopped:" class="slds-form-element__label slds-no-flex" data-target-id="9"></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="Shirley Street" data-target-id="9"></lightning-formatted-text>                                            
+                                <lightning-icon size="small" class="hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="9" data-id="90" variant="success" icon-name="utility:success" ></lightning-icon>
+                                    
+                            </div>
+                        </div> 
+                        <br/>
+                        <div class="slds-form-element slds-p-around_x-small containerBox" data-target-id="10" onclick={handleSelect}>                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="10">
+                                <lightning-formatted-text value="Last place filled with fuel:" class="slds-form-element__label slds-no-flex" data-target-id="10"></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="LVD Street" data-target-id="10"></lightning-formatted-text>                                            
+                                <lightning-icon size="small" class="hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="10" data-id="100" variant="success" icon-name="utility:success" ></lightning-icon>
+                                    
+                            </div>
+                        </div> 
+                        <br/>
+                        <div class="slds-form-element slds-p-around_x-small containerBox" data-target-id="11" onclick={handleSelect}>                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="11">
+                                <lightning-formatted-text value="Last place redeemed:" class="slds-form-element__label slds-no-flex" data-target-id="11"></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="PIMPAMA QLD 4209 AUSTRALIA" data-target-id="11" ></lightning-formatted-text>                                            
+                                <lightning-icon size="small" class="hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="11" data-id="110" variant="success" icon-name="utility:success" ></lightning-icon>
+                                    
+                            </div>
+                        </div> 
+                        <br/>
+                        <div class="slds-form-element slds-p-around_x-small containerBox" data-target-id="12" onclick={handleSelect}>                            
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right slds-p-left_small" data-target-id="12" >
+                                <lightning-formatted-text value="QFF:" class="slds-form-element__label slds-no-flex" data-target-id="12" ></lightning-formatted-text><br/>
+                                <lightning-formatted-text value="37896" data-target-id="12" ></lightning-formatted-text>                                            
+                                <lightning-icon size="small" class="hideSuccessIcon slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default" data-target-id="12" data-id="120" variant="success" icon-name="utility:success" ></lightning-icon>
+                                    
+                            </div>
+                        </div>
+                    </div>   
+                </lightning-layout-item>
+            </lightning-layout>
+        </lightning-card>
+    </div>
+</template>

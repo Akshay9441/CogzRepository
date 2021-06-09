@@ -1,0 +1,18 @@
+<template>
+    
+        <span class="slds-text-title slds-truncate">{fieldLabel}</span><br/>
+        <template if:true={phoneType}>
+            <lightning-formatted-phone value={fieldValue} ></lightning-formatted-phone>
+        </template>
+        <template if:true={urlType}>
+            <lightning-formatted-url value={fieldValue} label={fieldValue} target="_blank" ></lightning-formatted-url>
+        </template>
+        <template if:true={stringType}>
+            <lightning-formatted-text value={fieldValue} ></lightning-formatted-text>
+        </template>
+        <template if:true={lookupType}>
+                
+            <a   data-toto={lookupId} href="#" onmousedown={redirectToRecord}>{lookupName}</a>
+        </template>
+    
+</template>
