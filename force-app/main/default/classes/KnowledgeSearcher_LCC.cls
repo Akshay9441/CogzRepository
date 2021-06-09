@@ -7,6 +7,7 @@ public with sharing class KnowledgeSearcher_LCC {
     public static List<KnowledgeArticleVersion> search(String recordId) {
         // look up the case
         List<Case> cases = [SELECT Subject, Region__c, Sub_Region__c From Case WHERE Id =: recordId];
+        //Akshay
         if (cases.size() != 1) {
             throw new AuraHandledException('Unexpected result when trying to locate Case with Id <' + recordId + '>');
         }
