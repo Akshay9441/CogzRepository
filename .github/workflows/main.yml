@@ -24,7 +24,6 @@ jobs:
         run: dir
       - name: setting Variables
         run: sfdx auth:web:login --setdefaultdevhubusername --setalias myConnectedOrg
-            sfdx force:org:create --definitionfile sfdx-project.json --setdefaultusername --setalias myConnectedOrg
       - name: setDelault User
         run: 'sfdx config:set defaultusername=akshay@ibmpune.com --global'
       - name: Auth with the DevHub
