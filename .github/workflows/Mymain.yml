@@ -19,6 +19,8 @@ jobs:
         node_modules/sfdx-cli/bin/run plugins --core
     - name: Dorectory
       run:  pwd
+    - name: Dorectory One Back
+      run:  cd..
     - name: Authenticate DevHub
       run: |
         echo "${SALESFORCE_JWT_SECRET_KEY}" > server.key
