@@ -24,7 +24,7 @@ jobs:
       - name: List
         run: dir
       - name: Auth with the DevHub
-        run: 'sfdx config:set defaultusername=akshay@ibmpune.com  --global & sfdx force:auth:logout --targetusername akshay@ibmpune.com -p & sfdx force:auth:jwt:grant --clientid 3MVG9pe2TCoA1Pf58FPkW972jDpNE5zEui_PbFdTjIanHrQoq72R4hY_mFG7BbG6SftXK4gLgloytBOOMgUIZ  --jwtkeyfile server3.key --username akshay@ibmpune.com -a myConnectedOrg'
+        run: 'sfdx config:set defaultusername=akshay@ibmpune.com  --global & sfdx force:auth:jwt:grant --clientid 3MVG9pe2TCoA1Pf58FPkW972jDpNE5zEui_PbFdTjIanHrQoq72R4hY_mFG7BbG6SftXK4gLgloytBOOMgUIZ  --jwtkeyfile server3.key --username akshay@ibmpune.com -a myConnectedOrg'
       - name: Create scratch org
         run: 'sfdx force:org:create -f config/project-scratch-def.json -a my-scratch'
       - name: Push source
