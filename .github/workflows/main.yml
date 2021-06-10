@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2              
+      - uses: actions/checkout@v2            
       - name: Write the token into a file
         run: 'echo ${{ secrets.DEVHUB_TOKEN}} > server3.key'
       - name: Install Salesforce CLI
