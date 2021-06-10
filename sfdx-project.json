@@ -6,6 +6,6 @@
     }
   ],
   "namespace": "",
-  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sfdcLoginUrl": "https://forcpro-dev-ed.my.salesforce.com",
   "sourceApiVersion": "50.0"
 }
