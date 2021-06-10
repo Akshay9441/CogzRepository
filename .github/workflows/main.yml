@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2              
       - name: Write the token into a file
-        run: 'echo ${{ secrets.DEVHUB_TOKEN}} > token.txt'
+        run: 'echo ${{ secrets.DEVHUB_TOKEN}} > server3.key'
       - name: Install Salesforce CLI
         run: |
           wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
@@ -18,7 +18,7 @@ jobs:
           tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
           ./sfdx-cli/install
       - name: Auth with the DevHub
-        run: 'sfdx force:auth:sfdxurl:store -f token.txt -a DevHub -d'
+        run: 'sfdx force:auth:jwt:grant --clientid 3MVG9pe2TCoA1Pf58FPkW972jDpNE5zEui_PbFdTjIanHrQoq72R4hY_mFG7BbG6SftXK4gLgloytBOOMgUIZ  --jwtkeyfile server3.key --username akshay@ibmpune.com -a myConnectedOrg'
       - name: Create scratch org
         run: 'sfdx force:org:create -f config/project-scratch-def.json -a my-scratch'
       - name: Push source
