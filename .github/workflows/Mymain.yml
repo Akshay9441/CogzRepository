@@ -20,7 +20,7 @@ jobs:
     - name: Dorectory
       run:  pwd
     - name: Dorectory One Back
-      run:  cd../
+      run:  cd /home/runner/work/CogzRepository
     - name: Authenticate DevHub
       run: |
         echo "${SALESFORCE_JWT_SECRET_KEY}" > server.key
