@@ -17,6 +17,8 @@ jobs:
           mkdir sfdx-cli
           tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
           ./sfdx-cli/install
+      - name: Current Rirectory
+        run: pwd
       - name: Auth with the DevHub
         run: 'sfdx force:auth:jwt:grant --clientid 3MVG9pe2TCoA1Pf58FPkW972jDpNE5zEui_PbFdTjIanHrQoq72R4hY_mFG7BbG6SftXK4gLgloytBOOMgUIZ  --jwtkeyfile server3.key --username akshay@ibmpune.com -a myConnectedOrg'
       - name: Create scratch org
