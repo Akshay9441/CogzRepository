@@ -3,29 +3,46 @@ name: 'sfdx'
 on: [push]
 
 jobs:
-  build:
+  before_script:
+ # Decrypt server key
+  - openssl aes-256-cbc -d -md md5 -in assets/server.key.enc -out assets/server.key -k $SERVER_KEY_PASSWORD
+ 
+ # Install jq
+  - apt update && apt -y install jq
+ # Setup SFDX environment variables
+  - export CLIURL=https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+  - export SFDX_AUTOUPDATE_DISABLE=false
+  - export SFDX_USE_GENERIC_UNIX_KEYCHAIN=true
+ 
+  - export SFDX_DOMAIN_RETRY=300
+  - export SFDX_DISABLE_APP_HUB=true
+  - export SFDX_LOG_LEVEL=DEBUG
+  - export ROOTDIR=force-app/main/default/
+  - export TESTLEVEL=RunLocalTests
+  - export SCRATCH_ORG_ALIAS=konny_sc1
+  - export PACKAGEVERSION=""
+  - export MIN_TEST_COVERAGE=75
+  # Install Salesforce CLI
+  - mkdir sfdx
+  - wget -qO- $CLIURL | tar xJ -C sfdx --strip-components 1
+  - "./sfdx/install"
+  - export PATH=./sfdx/$(pwd):$PATH
 
-    runs-on: ubuntu-latest
+   stages:
+     - integrity
 
-    steps:
-      - uses: actions/checkout@v2              
-      - name: Write the token into a file
-        run: 'echo ${{ secrets.DEVHUB_TOKEN}} > token.txt'
-      - name: Install Salesforce CLI
-        run: |
-          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-          mkdir sfdx-cli
-          tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
-          ./sfdx-cli/install
-      - name: Auth with the DevHub
-        run: 'sfdx force:auth:sfdxurl:store -f token.txt -a DevHub -d'
-      - name: Create scratch org
-        run: 'sfdx force:org:create -f config/project-scratch-def.json -a my-scratch'
-      - name: Push source
-        run: 'sfdx force:source:push -u my-scratch'
-      - name: List orgs
-        run: 'sfdx force:org:list'
-      - name: Run tests
-        run: 'sfdx force:apex:test:run -u my-scratch --resultformat human'
-      - name: Delete scratch org
-        run: 'sfdx force:org:delete -u my-scratch --noprompt'
+scratch-test:
+  stage: integrity
+  script:
+    - sfdx force:auth:jwt:grant --clientid $SF_CONSUMER_KEY --jwtkeyfile assets/server.key --username $SF_USERNAME --setdefaultdevhubusername --setalias debHub
+    - sfdx force:org:create --definitionfile config/project-scratch-def.json --setalias $SCRATCH_ORG_ALIAS --wait 10 --durationdays 1
+    - sfdx force:source:push -u $SCRATCH_ORG_ALIAS
+    - sfdx force:apex:test:run -u $SCRATCH_ORG_ALIAS -r human --codecoverage --json > test_outcome.json
+
+    # showing the class names which are not covered enough
+    - echo -e "**********************************************************\n************** THESE CLASSES ARE NOT COVERED *************\n**********************************************************"
+
+    - cat test_outcome.json | jq ".result.coverage.coverage[] | select(.coveredPercent < $MIN_TEST_COVERAGE) | .name, .coveredPercent "
+    - cat test_outcome.json | jq ".result.coverage.coverage[] | select(.coveredPercent < $MIN_TEST_COVERAGE) | .name" > not_covered.txt
+    - sfdx force:org:delete -u $SCRATCH_ORG_ALIAS -p
+    - if (( $(cat not_covered.txt | wc -l) > 0)); then exit 1; fi
