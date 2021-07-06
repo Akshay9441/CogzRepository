@@ -1,48 +1,43 @@
-name: 'sfdx'
-
-on: [push]
+#.github/workflows/main.yml
+name: Scratch org for review
+on: pull_request
 
 jobs:
-  before_script:
- # Decrypt server key
-  - openssl aes-256-cbc -d -md md5 -in assets/server.key.enc -out assets/server.key -k $SERVER_KEY_PASSWORD
- 
- # Install jq
-  - apt update && apt -y install jq
- # Setup SFDX environment variables
-  - export CLIURL=https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-  - export SFDX_AUTOUPDATE_DISABLE=false
-  - export SFDX_USE_GENERIC_UNIX_KEYCHAIN=true
- 
-  - export SFDX_DOMAIN_RETRY=300
-  - export SFDX_DISABLE_APP_HUB=true
-  - export SFDX_LOG_LEVEL=DEBUG
-  - export ROOTDIR=force-app/main/default/
-  - export TESTLEVEL=RunLocalTests
-  - export SCRATCH_ORG_ALIAS=konny_sc1
-  - export PACKAGEVERSION=""
-  - export MIN_TEST_COVERAGE=75
-  # Install Salesforce CLI
-  - mkdir sfdx
-  - wget -qO- $CLIURL | tar xJ -C sfdx --strip-components 1
-  - "./sfdx/install"
-  - export PATH=./sfdx/$(pwd):$PATH
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+      if: github.event.action == 'opened' || github.event.action == 'synchronize'
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '10.x'
 
-   stages:
-     - integrity
+    - name: Install Salesforce CLI
+      run: |
+        npm install sfdx-cli
+        node_modules/sfdx-cli/bin/run --version
+        node_modules/sfdx-cli/bin/run plugins --core
+      
+    - name: Authenticate DevHub
+      run: |
+        echo "${SALESFORCE_JWT_SECRET_KEY}" > server.key
+        node_modules/sfdx-cli/bin/run force:auth:jwt:grant --clientid ${{ secrets.SALESFORCE_CONSUMER_KEY }} --jwtkeyfile server.key --username ${{ secrets.SALESFORCE_DEVHUB_USERNAME}} --setdefaultdevhubusername -a devhub
+      env:
+        SALESFORCE_JWT_SECRET_KEY: ${{ secrets.SALESFORCE_JWT_SECRET_KEY }}
+      
+    - name: Define CI org
+      run: node_modules/sfdx-cli/bin/run force:org:create -v devhub -s -f config/project-scratch-def.json -a ciorg -d 1
 
-scratch-test:
-  stage: integrity
-  script:
-    - sfdx force:auth:jwt:grant --clientid $SF_CONSUMER_KEY --jwtkeyfile assets/server.key --username $SF_USERNAME --setdefaultdevhubusername --setalias debHub
-    - sfdx force:org:create --definitionfile config/project-scratch-def.json --setalias $SCRATCH_ORG_ALIAS --wait 10 --durationdays 1
-    - sfdx force:source:push -u $SCRATCH_ORG_ALIAS
-    - sfdx force:apex:test:run -u $SCRATCH_ORG_ALIAS -r human --codecoverage --json > test_outcome.json
+    - name: Deploy source
+      run: node_modules/sfdx-cli/bin/run force:source:push -u ciorg
 
-    # showing the class names which are not covered enough
-    - echo -e "**********************************************************\n************** THESE CLASSES ARE NOT COVERED *************\n**********************************************************"
+    - name: Run Apex test
+      run: node_modules/sfdx-cli/bin/run force:apex:test:run -c -r human
 
-    - cat test_outcome.json | jq ".result.coverage.coverage[] | select(.coveredPercent < $MIN_TEST_COVERAGE) | .name, .coveredPercent "
-    - cat test_outcome.json | jq ".result.coverage.coverage[] | select(.coveredPercent < $MIN_TEST_COVERAGE) | .name" > not_covered.txt
-    - sfdx force:org:delete -u $SCRATCH_ORG_ALIAS -p
-    - if (( $(cat not_covered.txt | wc -l) > 0)); then exit 1; fi
+    - name: Comment login url
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PULL_REQUEST_COMMENT_URL:  ${{ github.event.pull_request._links.comments.href }}
+      run: |
+        CIORG_LOGIN_URL=$(node_modules/sfdx-cli/bin/run force:org:open -u ciorg -r) 
+        curl -X POST -H 'Content-Type:application/json' -d "{\"body\":\"${CIORG_LOGIN_URL}\"}" ${PULL_REQUEST_COMMENT_URL}?access_token=${GITHUB_TOKEN}
