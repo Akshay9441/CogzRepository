@@ -15,12 +15,20 @@ jobs:
     - name: pwd
       run: |
         pwd
+        ls
         cd ..
         ls
         pwd
         cd ..
         ls
         pwd
+        cd..
+        ls
+        pwd
+        cd..
+        ls
+        pwd
+        
         
     - name: dir
       run: ls
