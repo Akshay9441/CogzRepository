@@ -28,7 +28,7 @@ jobs:
     - name: pwd
       run: pwd
     - name: cd Direc
-      run: cd..
+      run: cd ..
     - name: dir
       run: pwd
     
