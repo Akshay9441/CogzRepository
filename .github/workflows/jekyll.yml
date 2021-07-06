@@ -15,16 +15,16 @@ jobs:
     - name: pwd
       run: |
         pwd
-        ls
+        ls -l
         cd ..
-        ls
+        ls -l
         pwd
         cd ..
-        ls
+        ls -l
         pwd
         cd..
         ls
-        pwd
+        
         
         
         
