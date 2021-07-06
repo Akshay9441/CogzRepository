@@ -26,7 +26,7 @@ jobs:
         SALESFORCE_JWT_SECRET_KEY: ${{ secrets.SALESFORCE_JWT_SECRET_KEY }}
       
     - name: Define CI org
-      run: pwd
+      run: dir
     - name: Define CI org
       run: node_modules/sfdx-cli/bin/run force:org:create -v devhub -s -f ./config/project-scratch-def.json -a ciorg -d 1
 
