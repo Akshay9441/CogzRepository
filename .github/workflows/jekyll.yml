@@ -25,9 +25,7 @@ jobs:
         cd..
         ls
         pwd
-        cd..
-        ls
-        pwd
+        
         
         
     - name: dir
