@@ -9,6 +9,7 @@ public with sharing class KnowledgeSearcher_LCC {
         List<Case> cases = [SELECT Subject, Region__c, Sub_Region__c From Case WHERE Id =: recordId];
         //Akshay
         if (cases.size() != 1) {
+            system.debug('Akshay');
             throw new AuraHandledException('Unexpected result when trying to locate Case  <' + recordId + '>');
         }
 
