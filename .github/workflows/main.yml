@@ -8,31 +8,32 @@ jobs:
    runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2            
-      - name: Write the token into a file
-        run: 'echo ${{ secrets.DEVHUB_TOKEN}} > server3.key'
-      - name: Install Salesforce CLI
-        run: |
-          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-          mkdir sfdx-cli
-          tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
-          ./sfdx-cli/install
-      - name: update
-        run: sfdx update
-      - name: Current Rirectory
-        run: pwd
-      - name: List
-        run: dir
-      
-      - name: Auth with the DevHub
-        run: 'sfdx auth:logout --all & sfdx auth:jwt:grant --clientid 3MVG9pe2TCoA1Pf58FPkW972jDpNE5zEui_PbFdTjIanHrQoq72R4hY_mFG7BbG6SftXK4gLgloytBOOMgUIZ --jwtkeyfile server3.key --username akshay@ibmpune.com --instanceurl  https://forcpro-dev-ed.my.salesforce.com'
-      - name: Create scratch org
-        run: 'sfdx force:org:create -f config/project-scratch-def.json -a my-scratch'
-      - name: Push source
-        run: 'sfdx force:source:push -u my-scratch'
-      - name: List orgs
-        run: 'sfdx force:org:list'
-      - name: Run tests
-        run: 'sfdx force:apex:test:run -u my-scratch --resultformat human'
-      - name: Delete scratch org
-        run: 'sfdx force:org:delete -u my-scratch --noprompt'
+     #
+# Download the Salesforce CLI and install it
+#
+before_script:
+ 
+# Set up environment variables
+  - export CLIURL=https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz  
+  - export SFDX_AUTOUPDATE_DISABLE=false
+  - export SFDX_USE_GENERIC_UNIX_KEYCHAIN=true
+  - export SFDX_DOMAIN_RETRY=300
+  - export SFDX_DISABLE_APP_HUB=true
+  - export SFDX_LOG_LEVEL=DEBUG
+  - export DEPLOYDIR=salesforce/Src/force-app
+   
+
+#Create sfdx directory
+  - mkdir sfdx
+  
+#Install Salesforce CLI 
+  - wget -qO- $CLIURL | tar xJ -C sfdx --strip-components 1
+  - "sudo ./sfdx/install"
+# Output CLI version and plug-in information
+  - /usr/local/bin/sfdx update
+  - /usr/local/bin/sfdx --version
+  - /usr/local/bin/sfdx plugins --core
+
+# Create tmp folders
+  - mkdir tmp-force-app
+  - mkdir force-app
