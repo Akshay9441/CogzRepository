@@ -1,6 +1,6 @@
 #.githjubs/umain.yml
 name: Scratch org for review
-on: pull_request
+on: push
 
 jobs:
   build:
