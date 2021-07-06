@@ -28,7 +28,7 @@ jobs:
     - name: pwd
       run: pwd
     - name: cd Direc
-      run: cd ..
+      run: cd /home/runner/work
     - name: dir
       run: pwd
     
