@@ -15,7 +15,7 @@ jobs:
     - name: pwd
       run: pwd
     - name: dir
-      run: dir
+      run: ls
     - name: cd
       run: cd /home/runner/work
     - name: pwd
