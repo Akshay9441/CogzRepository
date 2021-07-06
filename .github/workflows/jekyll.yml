@@ -13,7 +13,15 @@ jobs:
         node-version: '10.x'
 
     - name: pwd
-      run: pwd
+      run: |
+        pwd
+        cd ..
+        ls
+        pwd
+        cd ..
+        ls
+        pwd
+        
     - name: dir
       run: ls
     - name: cd
