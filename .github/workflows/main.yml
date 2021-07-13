@@ -1,4 +1,4 @@
-#.githjubs/main.yml
+#.githjubs/main.ymls
 name: Scratch org for review
 on: pull_request
 
