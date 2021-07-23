@@ -1,4 +1,4 @@
-#.githjubs/main.ymls
+#.githjubs/main.yml
 name: Scratch org for review
 on: push
 
