@@ -1,3 +1,4 @@
+//Comment
 public with sharing class KnowledgeSearcher_LCC {
     private static final String KNOWLEDGE_CATEGORY_OBJECT = 'KnowledgeArticleVersion';
     private static final String KNOWLEDGE_CATEGORY_FIELD_MAPPING_NAME = 'Region';
